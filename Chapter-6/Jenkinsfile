@@ -21,6 +21,7 @@ node {
             server.publishBuildInfo buildInfo
         }
 
+
         //启动 Sonarqube 代码静态扫描
         stage('Code scanning and get result'){
             sh '''
