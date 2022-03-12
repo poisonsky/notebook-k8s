@@ -1,13 +1,13 @@
 node {
 
     stage('Pull source code') {
-       git 'https://git.imooc.com/coding-439/Notebook-k8s.git'
+       git 'https://github.com/poisonsky/notebook-k8s.git
 
     }
     dir('Chapter-6/notebook-service') {
         //Maven 构建，制品上传到 Artifactory
         stage('Maven build'){
-            def server = Artifactory.newServer url: "http://localhost:8083/artifactory", credentialsId: 'art-oss-cred'
+            def server = Artifactory.newServer url: "http://192.168.0.15:8082/artifactory", credentialsId: 'artifactory'
             def rtMaven = Artifactory.newMavenBuild()
 
             rtMaven.tool = 'maven' // Tool name from Jenkins configuration
@@ -24,7 +24,7 @@ node {
         //启动 Sonarqube 代码静态扫描
         stage('Code scanning and get result'){
             sh '''
-                mvn sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login=6ccc3f04e7dacf5cb299c46209b4237d8b46a3d1
+                // mvn sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login=6ccc3f04e7dacf5cb299c46209b4237d8b46a3d1
 
             '''
 
@@ -33,7 +33,7 @@ node {
         //启动 YAPI 接口测试
         stage('API Testing'){
          sh '''
-         curl http://localhost:3000/api/open/run_auto_test?id=11&token=b57ff23110407a89d4a81be007d6f35665772044cde1193b131a349c33aeb7ed
+          // curl http://localhost:3000/api/open/run_auto_test?id=11&token=b57ff23110407a89d4a81be007d6f35665772044cde1193b131a349c33aeb7ed
          '''
         }
 
